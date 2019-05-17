@@ -1,5 +1,7 @@
 package infrastructure;
 
+import infrastructure.exceptions.CommandHandlerConflictException;
+
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -57,7 +59,12 @@ public class MessageDispatcher {
     // This is the kind of reflection magic needed
     // Assumes command handling methods must be on aggregate roots, would be good to change
     private void addCommandHandler(Class<? extends AggregateRoot> clazz, Method cmdHandler) {
-        commandHandlers.put(cmdHandler.getParameterTypes()[0], cmd -> {
+        Class cmdType = cmdHandler.getParameterTypes()[0];
+        if (commandHandlers.containsKey(cmdType)) {
+            throw new CommandHandlerConflictException("Tried to register more than one command handler for " + cmdType);
+        }
+
+        commandHandlers.put(cmdType, cmd -> {
             try {
                 AggregateRoot agg = aggregateRepo.getAggregate(cmd.getId(), clazz);
                 return (CommandResult) cmdHandler.invoke(agg, cmd);
