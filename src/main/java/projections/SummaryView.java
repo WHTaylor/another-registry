@@ -1,5 +1,6 @@
 package projections;
 
+import domain.proposals.events.ArbitraryEvent;
 import domain.proposals.events.ProposalCreated;
 import domain.proposals.events.ProposalSubmitted;
 import infrastructure.EventHandler;
@@ -25,6 +26,19 @@ public class SummaryView {
         summaries.put(evt.getId(), summary);
     }
 
+    @EventHandler
+    public void on(ArbitraryEvent evt) {
+        summaries.get(evt.getId()).incCounter();
+    }
+
+    public ProposalSummary getSummaryWithHighestCount() {
+        return summaries.values().stream().max(Comparator.comparingInt(ProposalSummary::getCounter)).get();
+    }
+
+    public double getAverageCounter() {
+        return summaries.values().stream().mapToInt(ProposalSummary::getCounter).sum() / (float)summaries.values().size();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -39,9 +53,11 @@ public class SummaryView {
         private UUID id;
         private String title;
         private String referenceNumber;
+        private int counter;
 
         ProposalSummary(UUID id) {
             this.id = id;
+            counter = 0;
         }
 
         public UUID getId() {
@@ -64,6 +80,14 @@ public class SummaryView {
             return referenceNumber;
         }
 
+        public int getCounter() {
+            return counter;
+        }
+
+        public void incCounter() {
+            counter++;
+        }
+
         public void setReferenceNumber(String referenceNumber) {
             this.referenceNumber = referenceNumber;
         }
@@ -72,7 +96,8 @@ public class SummaryView {
         public String toString() {
             return "Proposal " + id + ", " +
                     "reference " + referenceNumber + ", " +
-                    "title " + title;
+                    "title " + title + ", " +
+                    "counter " + counter;
         }
     }
 }

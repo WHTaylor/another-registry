@@ -1,4 +1,5 @@
 import domain.proposals.Proposal;
+import domain.proposals.commands.ArbitraryCommand;
 import domain.proposals.commands.CreateProposal;
 import domain.proposals.commands.SubmitProposal;
 import infrastructure.*;
@@ -19,21 +20,26 @@ public class Main {
         SummaryView view = new SummaryView();
         dispatcher.registerEventSubscriber(counter);
         dispatcher.registerEventSubscriber(view);
-        for (int i = 0; i < 1000000; i++) {
+        for (int i = 0; i < 5000000; i++) {
             UUID id = UUID.randomUUID();
             dispatcher.dispatch(new CreateProposal(id));
-            if (i % 1000 == 0) {
+            if (i % 10000 == 0) {
                 System.out.println(i);
             }
             if (Math.random() > 0.5) {
                 dispatcher.dispatch(new SubmitProposal(id, "ref"));
             }
+
+            while(Math.random() > 0.25) {
+                dispatcher.dispatch(new ArbitraryCommand(id));
+            }
         }
-        //System.out.println(view.toString());
 
         System.out.println(counter.getNumProposals() + " proposals created, " +
                 counter.getNumSubmitted() + " proposals submitted - " +
                 counter.getPercentageSubmitted() + "% submitted");
 
+        System.out.println("Average counter was " + view.getAverageCounter() + ", " +
+                "proposal with highest counter was " + view.getSummaryWithHighestCount());
     }
 }

@@ -1,7 +1,9 @@
 package domain.proposals;
 
+import domain.proposals.commands.ArbitraryCommand;
 import domain.proposals.commands.CreateProposal;
 import domain.proposals.commands.SubmitProposal;
+import domain.proposals.events.ArbitraryEvent;
 import domain.proposals.events.ProposalCreated;
 import domain.proposals.events.ProposalSubmitted;
 import infrastructure.*;
@@ -10,9 +12,11 @@ import java.util.Collections;
 
 public class Proposal extends AggregateRoot {
     private String referenceNumber;
+    private int counter;
 
     public Proposal() {
         super();
+        counter = 0;
     }
 
     @CommandHandler
@@ -33,6 +37,11 @@ public class Proposal extends AggregateRoot {
         }
     }
 
+    @CommandHandler
+    public CommandResult handle(ArbitraryCommand cmd) {
+        return new CommandResult(Collections.singletonList(new ArbitraryEvent(cmd.getId())));
+    }
+
     @EventApplier
     private void apply(ProposalCreated evt) {
         setId(evt.getId());
@@ -40,6 +49,11 @@ public class Proposal extends AggregateRoot {
 
     @EventApplier
     private void apply(ProposalSubmitted evt) {
-        this.referenceNumber = referenceNumber;
+        this.referenceNumber = evt.getReferenceNumber();
+    }
+
+    @EventApplier
+    private void apply(ArbitraryEvent evt) {
+        this.counter += 1;
     }
 }
