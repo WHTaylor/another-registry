@@ -40,12 +40,14 @@ public class MessageDispatcher {
         }
     }
 
-    public void registerCommandHandlers(Class<? extends AggregateRoot> aggregateClass) {
+    public void registerAggregateRootClass(Class<? extends AggregateRoot> aggregateClass) {
         for (Method method : aggregateClass.getDeclaredMethods()) {
             if (method.isAnnotationPresent(CommandHandler.class)) {
                 addCommandHandler(aggregateClass, method);
             }
         }
+
+        aggregateRepo.registerAggregateRoot(aggregateClass);
     }
 
     public void registerEventSubscriber(Object subscriber) {
