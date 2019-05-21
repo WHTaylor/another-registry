@@ -1,6 +1,5 @@
 import domain.proposals.Proposal;
 import domain.proposals.commands.AddProposer;
-import domain.proposals.commands.ArbitraryCommand;
 import domain.proposals.commands.CreateProposal;
 import domain.proposals.commands.SubmitProposal;
 import infrastructure.*;
@@ -29,10 +28,6 @@ public class Main {
                 dispatcher.dispatch(new SubmitProposal(id, "ref"));
             }
 
-            while (Math.random() > 0.25) {
-                dispatcher.dispatch(new ArbitraryCommand(id));
-            }
-
             while(Math.random() > 0.25) {
                 dispatcher.dispatch(new AddProposer(id, Integer.toString((((int)(Math.random() * 10))))));
             }
@@ -41,9 +36,6 @@ public class Main {
         System.out.println(counter.getNumProposals() + " proposals created, " +
                 counter.getNumSubmitted() + " proposals submitted - " +
                 counter.getPercentageSubmitted() + "% submitted");
-
-        System.out.println("Average counter was " + view.getAverageCounter() + ", " +
-                "proposal with highest counter was " + view.getSummaryWithHighestCount());
 
         System.out.println(proposerStats);
     }

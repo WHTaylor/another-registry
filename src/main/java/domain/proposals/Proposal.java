@@ -8,13 +8,11 @@ import java.util.Collections;
 
 public class Proposal extends AggregateRoot {
     private String referenceNumber;
-    private int counter;
     private ProposalTeam proposers;
 
     public Proposal() {
         super();
         proposers = new ProposalTeam();
-        counter = 0;
     }
 
     @CommandHandler
@@ -63,11 +61,6 @@ public class Proposal extends AggregateRoot {
     @EventApplier
     public void apply(ProposalSubmitted evt) {
         this.referenceNumber = evt.getReferenceNumber();
-    }
-
-    @EventApplier
-    public void apply(ArbitraryEvent evt) {
-        this.counter += 1;
     }
 
     @EventApplier
