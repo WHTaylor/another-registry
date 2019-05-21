@@ -48,7 +48,7 @@ public class MessageDispatcher {
         }
     }
 
-    public void registerEventSubscribers(Object subscriber) {
+    public void registerEventSubscriber(Object subscriber) {
         for (Method method : subscriber.getClass().getDeclaredMethods()) {
             if (method.isAnnotationPresent(EventHandler.class)) {
                 addEventHandler(subscriber, method);

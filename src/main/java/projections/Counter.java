@@ -4,11 +4,11 @@ import domain.proposals.events.ProposalCreated;
 import domain.proposals.events.ProposalSubmitted;
 import infrastructure.EventHandler;
 
-public class counter {
+public class Counter {
     private int numProposals;
     private int numSubmitted;
 
-    public counter() {
+    public Counter() {
         numProposals = 0;
         numSubmitted = 0;
     }

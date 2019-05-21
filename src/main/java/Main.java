@@ -2,7 +2,7 @@ import domain.proposals.Proposal;
 import domain.proposals.commands.CreateProposal;
 import domain.proposals.commands.SubmitProposal;
 import infrastructure.*;
-import projections.counter;
+import projections.Counter;
 import projections.SummaryView;
 
 import java.util.UUID;
@@ -14,11 +14,11 @@ public class Main {
         repo.setUseCache(false);
         MessageDispatcher dispatcher = new MessageDispatcher(eventStore, repo);
         dispatcher.registerCommandHandlers(Proposal.class);
-        counter counter = new counter();
+        Counter counter = new Counter();
         SummaryView view = new SummaryView();
-        dispatcher.registerEventSubscribers(counter);
-        dispatcher.registerEventSubscribers(view);
-        for (int i = 0; i < 2000000; i++) {
+        dispatcher.registerEventSubscriber(counter);
+        dispatcher.registerEventSubscriber(view);
+        for (int i = 0; i < 1000000; i++) {
             UUID id = UUID.randomUUID();
             dispatcher.dispatch(new CreateProposal(id));
             if (i % 1000 == 0) {
