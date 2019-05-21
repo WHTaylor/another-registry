@@ -1,11 +1,7 @@
 package domain.proposals;
 
-import domain.proposals.commands.ArbitraryCommand;
-import domain.proposals.commands.CreateProposal;
-import domain.proposals.commands.SubmitProposal;
-import domain.proposals.events.ArbitraryEvent;
-import domain.proposals.events.ProposalCreated;
-import domain.proposals.events.ProposalSubmitted;
+import domain.proposals.commands.*;
+import domain.proposals.events.*;
 import infrastructure.*;
 
 import java.util.Collections;
@@ -13,15 +9,17 @@ import java.util.Collections;
 public class Proposal extends AggregateRoot {
     private String referenceNumber;
     private int counter;
+    private ProposalTeam proposers;
 
     public Proposal() {
         super();
+        proposers = new ProposalTeam();
         counter = 0;
     }
 
     @CommandHandler
     public CommandResult handle(CreateProposal cmd) {
-        if(getId() != null) {
+        if (getId() != null) {
             return CommandResult.failure("Proposal " + getId() + " already created");
         } else {
             return new CommandResult(Collections.singletonList(new ProposalCreated(cmd.getId())));
@@ -30,7 +28,7 @@ public class Proposal extends AggregateRoot {
 
     @CommandHandler
     public CommandResult handle(SubmitProposal cmd) {
-        if(referenceNumber != null) {
+        if (referenceNumber != null) {
             return CommandResult.failure("Proposal " + getId() + " has already been submitted");
         } else {
             return new CommandResult(Collections.singletonList(new ProposalSubmitted(cmd.getId(), cmd.getReferenceNumber())));
@@ -38,8 +36,23 @@ public class Proposal extends AggregateRoot {
     }
 
     @CommandHandler
-    public CommandResult handle(ArbitraryCommand cmd) {
-        return new CommandResult(Collections.singletonList(new ArbitraryEvent(cmd.getId())));
+    public CommandResult handle(AddProposer cmd) {
+        return proposers.handle(cmd);
+    }
+
+    @CommandHandler
+    public CommandResult handle(AssignPIRole cmd) {
+        return proposers.handle(cmd);
+    }
+
+    @CommandHandler
+    public CommandResult handle(AssignECRole cmd) {
+        return proposers.handle(cmd);
+    }
+
+    @CommandHandler
+    public CommandResult handle(RemoveProposer cmd) {
+        return proposers.handle(cmd);
     }
 
     @EventApplier
@@ -55,5 +68,25 @@ public class Proposal extends AggregateRoot {
     @EventApplier
     public void apply(ArbitraryEvent evt) {
         this.counter += 1;
+    }
+
+    @EventApplier
+    public void apply(ProposerAdded evt) {
+        proposers.apply(evt);
+    }
+
+    @EventApplier
+    public void apply(PIRoleAssigned evt) {
+        proposers.apply(evt);
+    }
+
+    @EventApplier
+    public void apply(ECRoleAssigned evt) {
+        proposers.apply(evt);
+    }
+
+    @EventApplier
+    public void apply(ProposerRemoved evt) {
+        proposers.apply(evt);
     }
 }

@@ -1,9 +1,11 @@
 import domain.proposals.Proposal;
+import domain.proposals.commands.AddProposer;
 import domain.proposals.commands.ArbitraryCommand;
 import domain.proposals.commands.CreateProposal;
 import domain.proposals.commands.SubmitProposal;
 import infrastructure.*;
 import projections.Counter;
+import projections.ProposerStats;
 import projections.SummaryView;
 
 import java.util.*;
@@ -13,7 +15,8 @@ public class Main {
         List<Class<? extends AggregateRoot>> aggregateRootClasses = Collections.singletonList(Proposal.class);
         Counter counter = new Counter();
         SummaryView view = new SummaryView();
-        List<?> eventSubscribers = Arrays.asList(counter, view);
+        ProposerStats proposerStats = new ProposerStats();
+        List<?> eventSubscribers = Arrays.asList(counter, view, proposerStats);
         MessageDispatcher dispatcher = setUp(aggregateRootClasses, eventSubscribers);
 
         for (int i = 0; i < 500000; i++) {
@@ -29,6 +32,10 @@ public class Main {
             while (Math.random() > 0.25) {
                 dispatcher.dispatch(new ArbitraryCommand(id));
             }
+
+            while(Math.random() > 0.25) {
+                dispatcher.dispatch(new AddProposer(id, Integer.toString((((int)(Math.random() * 10))))));
+            }
         }
 
         System.out.println(counter.getNumProposals() + " proposals created, " +
@@ -37,6 +44,8 @@ public class Main {
 
         System.out.println("Average counter was " + view.getAverageCounter() + ", " +
                 "proposal with highest counter was " + view.getSummaryWithHighestCount());
+
+        System.out.println(proposerStats);
     }
 
     private static MessageDispatcher setUp(Collection<Class<? extends AggregateRoot>> aggregateRootClasses,
