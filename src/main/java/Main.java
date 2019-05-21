@@ -15,6 +15,7 @@ public class Main {
         SummaryView view = new SummaryView();
         List<?> eventSubscribers = Arrays.asList(counter, view);
         MessageDispatcher dispatcher = setUp(aggregateRootClasses, eventSubscribers);
+
         for (int i = 0; i < 500000; i++) {
             UUID id = UUID.randomUUID();
             dispatcher.dispatch(new CreateProposal(id));

@@ -29,7 +29,6 @@ public class AggregateRepo {
                 Class<?> eventType = method.getParameterTypes()[0];
                 eventAppliers.get(aggRootClass).put(eventType, (aggInstance, evt) -> {
                     try {
-                        method.setAccessible(true);
                         method.invoke(aggInstance, evt);
                     } catch (IllegalAccessException | InvocationTargetException ex) {
                         ex.printStackTrace();

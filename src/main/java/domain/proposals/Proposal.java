@@ -43,17 +43,17 @@ public class Proposal extends AggregateRoot {
     }
 
     @EventApplier
-    private void apply(ProposalCreated evt) {
+    public void apply(ProposalCreated evt) {
         setId(evt.getId());
     }
 
     @EventApplier
-    private void apply(ProposalSubmitted evt) {
+    public void apply(ProposalSubmitted evt) {
         this.referenceNumber = evt.getReferenceNumber();
     }
 
     @EventApplier
-    private void apply(ArbitraryEvent evt) {
+    public void apply(ArbitraryEvent evt) {
         this.counter += 1;
     }
 }
