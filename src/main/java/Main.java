@@ -11,6 +11,7 @@ public class Main {
     public static void main(String[] args) {
         EventStore eventStore = new InMemoryEventStore();
         AggregateRepo repo = new AggregateRepo(eventStore);
+        repo.registerAggregateRoot(Proposal.class);
         repo.setUseCache(false);
         MessageDispatcher dispatcher = new MessageDispatcher(eventStore, repo);
         dispatcher.registerCommandHandlers(Proposal.class);
