@@ -18,27 +18,27 @@ public class ProposerStats {
 
     @EventHandler
     public void on(ProposerAdded evt) {
-        ProposalTeam team = proposalTeams.getOrDefault(evt.getId(), new ProposalTeam());
+        ProposalTeam team = proposalTeams.getOrDefault(evt.getAggregateId(), new ProposalTeam());
         team.uns.add(evt.getUn());
-        proposalTeams.put(evt.getId(), team);
+        proposalTeams.put(evt.getAggregateId(), team);
     }
 
     @EventHandler
     public void on(PIRoleAssigned evt) {
-        ProposalTeam team = proposalTeams.get(evt.getId());
+        ProposalTeam team = proposalTeams.get(evt.getAggregateId());
         team.pi = evt.getUn();
     }
 
     @EventHandler
     public void on(ECRoleAssigned evt) {
-        ProposalTeam team = proposalTeams.get(evt.getId());
+        ProposalTeam team = proposalTeams.get(evt.getAggregateId());
         team.ec = evt.getUn();
     }
 
     @EventHandler
     public void on(ProposerRemoved evt) {
         //Purposely not handling reshuffling pi/ec on removal to see if it matters - it should
-        ProposalTeam team = proposalTeams.get(evt.getId());
+        ProposalTeam team = proposalTeams.get(evt.getAggregateId());
         team.uns.remove(evt.getUn());
     }
 

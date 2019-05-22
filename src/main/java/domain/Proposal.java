@@ -55,7 +55,7 @@ public class Proposal extends AggregateRoot {
 
     @EventApplier
     public void apply(ProposalCreated evt) {
-        setId(evt.getId());
+        setId(evt.getAggregateId());
     }
 
     @EventApplier

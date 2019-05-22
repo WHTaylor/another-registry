@@ -13,11 +13,11 @@ import java.util.function.Function;
 public class MessageDispatcher {
     private HashMap<Class, Function<Command, CommandResult>> commandHandlers;
     private HashMap<Class, Collection<Consumer<Event>>> eventHandlers;
-    private EventStore eventStore;
+    private EventRepo eventRepo;
     private AggregateRepo aggregateRepo;
 
-    public MessageDispatcher(EventStore eventStore, AggregateRepo aggregateRepo) {
-        this.eventStore = eventStore;
+    public MessageDispatcher(EventRepo eventRepo, AggregateRepo aggregateRepo) {
+        this.eventRepo= eventRepo;
         this.aggregateRepo = aggregateRepo;
         commandHandlers = new HashMap<>();
         eventHandlers = new HashMap<>();
@@ -27,7 +27,7 @@ public class MessageDispatcher {
         CommandResult result = commandHandlers.get(cmd.getClass()).apply(cmd);
         if (result.wasSuccessful()) {
             // Any way to make this transactional?
-            eventStore.saveEvents(result.getEvents());
+            eventRepo.saveEvents(result.getEvents());
             for (Event evt : result.getEvents()) {
                 publishEvent(evt);
             }

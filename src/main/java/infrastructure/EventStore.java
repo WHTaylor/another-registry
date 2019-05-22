@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.UUID;
 
 public interface EventStore {
-    void saveEvent(Event evt);
-    void saveEvents(List<Event> evts);
-    List<Event> getEventsForAggregate(UUID id);
+    void saveEvents(List<SerializedEvent> evts);
+    List<SerializedEvent> getEventsForAggregate(UUID id);
 }

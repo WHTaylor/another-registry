@@ -3,13 +3,13 @@ package infrastructure;
 import java.util.UUID;
 
 public abstract class Event {
-    private UUID id;
+    private UUID aggregateId;
 
-    public Event(UUID id) {
-        this.id = id;
+    public Event(UUID aggregateId) {
+        this.aggregateId = aggregateId;
     }
 
-    public UUID getId() {
-        return id;
+    public UUID getAggregateId() {
+        return aggregateId;
     }
 }

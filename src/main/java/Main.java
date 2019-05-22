@@ -44,10 +44,11 @@ public class Main {
                                            Collection<?> eventSubscribers) {
         EventStore eventStore = new InMemoryEventStore();
 
-        AggregateRepo repo = new AggregateRepo(eventStore);
-        repo.setUseCache(false);
+        EventRepo eventRepo = new EventRepo(eventStore);
+        AggregateRepo aggregateRepo = new AggregateRepo(eventRepo);
+        aggregateRepo.setUseCache(false);
 
-        MessageDispatcher dispatcher = new MessageDispatcher(eventStore, repo);
+        MessageDispatcher dispatcher = new MessageDispatcher(eventRepo, aggregateRepo);
         for (Class<? extends AggregateRoot> clazz : aggregateRootClasses) {
             dispatcher.registerAggregateRootClass(clazz);
         }

@@ -15,14 +15,14 @@ public class SummaryView {
 
     @EventHandler
     public void on(ProposalCreated evt) {
-        summaries.put(evt.getId(), new ProposalSummary(evt.getId()));
+        summaries.put(evt.getAggregateId(), new ProposalSummary(evt.getAggregateId()));
     }
 
     @EventHandler
     public void on(ProposalSubmitted evt) {
-        ProposalSummary summary = summaries.get(evt.getId());
+        ProposalSummary summary = summaries.get(evt.getAggregateId());
         summary.setReferenceNumber(evt.getReferenceNumber());
-        summaries.put(evt.getId(), summary);
+        summaries.put(evt.getAggregateId(), summary);
     }
 
     @Override

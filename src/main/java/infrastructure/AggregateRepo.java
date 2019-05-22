@@ -10,15 +10,15 @@ import java.util.function.BiConsumer;
 
 public class AggregateRepo {
     private HashMap<UUID, AggregateRoot> aggregateCache;
-    private EventStore eventStore;
+    private EventRepo eventRepo;
     private boolean useCache;
 
     private Map<Class<? extends AggregateRoot>, Map<Class<?>, BiConsumer<AggregateRoot, Event>>> eventAppliers;
 
-    public AggregateRepo(EventStore eventStore) {
+    public AggregateRepo(EventRepo eventRepo) {
         aggregateCache = new HashMap<>();
         eventAppliers = new HashMap<>();
-        this.eventStore = eventStore;
+        this.eventRepo = eventRepo;
     }
 
     public void registerAggregateRoot(Class<? extends AggregateRoot> aggRootClass) {
@@ -40,7 +40,7 @@ public class AggregateRepo {
 
     AggregateRoot getAggregate(UUID id, Class<? extends AggregateRoot> clazz) {
         AggregateRoot agg = null;
-        List<Event> events = eventStore.getEventsForAggregate(id);
+        List<Event> events = eventRepo.getEventsFor(id);
         if (useCache) {
             try {
                 agg = aggregateCache.getOrDefault(id, clazz.newInstance());
