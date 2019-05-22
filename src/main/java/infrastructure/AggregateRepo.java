@@ -40,6 +40,7 @@ public class AggregateRepo {
 
     AggregateRoot getAggregate(UUID id, Class<? extends AggregateRoot> clazz) {
         AggregateRoot agg = null;
+        List<Event> events = eventStore.getEventsForAggregate(id);
         if (useCache) {
             try {
                 agg = aggregateCache.getOrDefault(id, clazz.newInstance());
@@ -51,7 +52,6 @@ public class AggregateRepo {
             if (agg == null) {
                 throw new RuntimeException("Very surprised if we can get here");
             } else {
-                List<Event> events = eventStore.getEventsForAggregate(id);
                 if (events.size() != agg.numEventsProcessed()) {
                     applyEvents(agg, events.subList(agg.numEventsProcessed(), events.size()));
                 }
@@ -61,7 +61,6 @@ public class AggregateRepo {
         } else {
             try {
                 agg = clazz.newInstance();
-                List<Event> events = eventStore.getEventsForAggregate(id);
                 applyEvents(agg, events);
                 return agg;
             } catch (Exception ex) {

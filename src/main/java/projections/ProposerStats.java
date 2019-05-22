@@ -1,9 +1,9 @@
 package projections;
 
-import domain.proposals.events.ECRoleAssigned;
-import domain.proposals.events.PIRoleAssigned;
-import domain.proposals.events.ProposerAdded;
-import domain.proposals.events.ProposerRemoved;
+import domain.events.ECRoleAssigned;
+import domain.events.PIRoleAssigned;
+import domain.events.ProposerAdded;
+import domain.events.ProposerRemoved;
 import infrastructure.EventHandler;
 
 import java.util.*;

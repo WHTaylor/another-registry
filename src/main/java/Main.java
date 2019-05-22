@@ -1,7 +1,7 @@
-import domain.proposals.Proposal;
-import domain.proposals.commands.AddProposer;
-import domain.proposals.commands.CreateProposal;
-import domain.proposals.commands.SubmitProposal;
+import domain.Proposal;
+import domain.commands.AddProposer;
+import domain.commands.CreateProposal;
+import domain.commands.SubmitProposal;
 import infrastructure.*;
 import projections.Counter;
 import projections.ProposerStats;
@@ -18,7 +18,7 @@ public class Main {
         List<?> eventSubscribers = Arrays.asList(counter, view, proposerStats);
         MessageDispatcher dispatcher = setUp(aggregateRootClasses, eventSubscribers);
 
-        for (int i = 0; i < 1000000; i++) {
+        for (int i = 0; i < 100000; i++) {
             UUID id = UUID.randomUUID();
             dispatcher.dispatch(new CreateProposal(id));
             if (i % 10000 == 0) {

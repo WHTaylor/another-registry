@@ -1,13 +1,13 @@
-package domain.proposals.events;
+package domain.events;
 
 import infrastructure.Event;
 
 import java.util.UUID;
 
-public class ProposerAdded extends Event {
+public class ECRoleAssigned extends Event {
     private String un;
 
-    public ProposerAdded(UUID id, String un) {
+    public ECRoleAssigned(UUID id, String un) {
         super(id);
         this.un = un;
     }

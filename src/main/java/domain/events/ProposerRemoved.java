@@ -1,4 +1,4 @@
-package domain.proposals.events;
+package domain.events;
 
 import infrastructure.Event;
 

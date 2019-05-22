@@ -1,13 +1,13 @@
-package domain.proposals.commands;
+package domain.events;
 
-import infrastructure.Command;
+import infrastructure.Event;
 
 import java.util.UUID;
 
-public class SubmitProposal extends Command {
+public class ProposalSubmitted extends Event{
     private String referenceNumber;
 
-    public SubmitProposal(UUID id, String referenceNumber) {
+    public ProposalSubmitted(UUID id, String referenceNumber) {
         super(id);
         this.referenceNumber = referenceNumber;
     }

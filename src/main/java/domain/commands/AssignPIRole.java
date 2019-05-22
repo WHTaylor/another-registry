@@ -1,4 +1,4 @@
-package domain.proposals.commands;
+package domain.commands;
 
 import infrastructure.Command;
 

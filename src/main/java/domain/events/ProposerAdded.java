@@ -1,13 +1,13 @@
-package domain.proposals.events;
+package domain.events;
 
 import infrastructure.Event;
 
 import java.util.UUID;
 
-public class PIRoleAssigned extends Event {
+public class ProposerAdded extends Event {
     private String un;
 
-    public PIRoleAssigned(UUID id, String un) {
+    public ProposerAdded(UUID id, String un) {
         super(id);
         this.un = un;
     }

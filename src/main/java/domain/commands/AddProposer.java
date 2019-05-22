@@ -1,13 +1,13 @@
-package domain.proposals.commands;
+package domain.commands;
 
 import infrastructure.Command;
 
 import java.util.UUID;
 
-public class RemoveProposer extends Command {
+public class AddProposer extends Command {
     private String un;
 
-    public RemoveProposer(UUID id, String un) {
+    public AddProposer(UUID id, String un) {
         super(id);
         this.un = un;
     }

@@ -1,8 +1,8 @@
-import domain.proposals.Proposal;
-import domain.proposals.commands.CreateProposal;
-import domain.proposals.commands.SubmitProposal;
-import domain.proposals.events.ProposalCreated;
-import domain.proposals.events.ProposalSubmitted;
+import domain.Proposal;
+import domain.commands.CreateProposal;
+import domain.commands.SubmitProposal;
+import domain.events.ProposalCreated;
+import domain.events.ProposalSubmitted;
 import infrastructure.*;
 import org.junit.Test;
 

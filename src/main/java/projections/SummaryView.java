@@ -1,7 +1,7 @@
 package projections;
 
-import domain.proposals.events.ProposalCreated;
-import domain.proposals.events.ProposalSubmitted;
+import domain.events.ProposalCreated;
+import domain.events.ProposalSubmitted;
 import infrastructure.EventHandler;
 
 import java.util.*;

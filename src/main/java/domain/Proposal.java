@@ -1,7 +1,7 @@
-package domain.proposals;
+package domain;
 
-import domain.proposals.commands.*;
-import domain.proposals.events.*;
+import domain.commands.*;
+import domain.events.*;
 import infrastructure.*;
 
 import java.util.Collections;

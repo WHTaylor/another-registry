@@ -1,13 +1,13 @@
-package domain.proposals;
+package domain;
 
-import domain.proposals.commands.AddProposer;
-import domain.proposals.commands.AssignECRole;
-import domain.proposals.commands.AssignPIRole;
-import domain.proposals.commands.RemoveProposer;
-import domain.proposals.events.ECRoleAssigned;
-import domain.proposals.events.PIRoleAssigned;
-import domain.proposals.events.ProposerAdded;
-import domain.proposals.events.ProposerRemoved;
+import domain.commands.AddProposer;
+import domain.commands.AssignECRole;
+import domain.commands.AssignPIRole;
+import domain.commands.RemoveProposer;
+import domain.events.ECRoleAssigned;
+import domain.events.PIRoleAssigned;
+import domain.events.ProposerAdded;
+import domain.events.ProposerRemoved;
 import infrastructure.CommandResult;
 import infrastructure.Event;
 
