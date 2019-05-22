@@ -18,7 +18,7 @@ public class Main {
         List<?> eventSubscribers = Arrays.asList(counter, view, proposerStats);
         MessageDispatcher dispatcher = setUp(aggregateRootClasses, eventSubscribers);
 
-        for (int i = 0; i < 500000; i++) {
+        for (int i = 0; i < 1000000; i++) {
             UUID id = UUID.randomUUID();
             dispatcher.dispatch(new CreateProposal(id));
             if (i % 10000 == 0) {
@@ -28,8 +28,8 @@ public class Main {
                 dispatcher.dispatch(new SubmitProposal(id, "ref"));
             }
 
-            while(Math.random() > 0.25) {
-                dispatcher.dispatch(new AddProposer(id, Integer.toString((((int)(Math.random() * 10))))));
+            while (Math.random() > 0.25) {
+                dispatcher.dispatch(new AddProposer(id, Integer.toString((((int) (Math.random() * 10))))));
             }
         }
 

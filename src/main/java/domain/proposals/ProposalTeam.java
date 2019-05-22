@@ -55,7 +55,7 @@ class ProposalTeam {
         return new CommandResult(Collections.singletonList(new ECRoleAssigned(cmd.getId(), cmd.getUn())));
     }
 
-    CommandResult handle(RemoveProposer cmd){
+    CommandResult handle(RemoveProposer cmd) {
         String un = cmd.getUn();
         if (!proposerUns.contains(un)) {
             return CommandResult.failure("User " + un + " is not on proposal, cannot be removed");
@@ -64,12 +64,12 @@ class ProposalTeam {
         List<Event> events = new ArrayList<>();
         events.add(new ProposerRemoved(cmd.getId(), un));
 
-        if(un.equals(pi)) {
+        if (un.equals(pi)) {
             Optional<String> replacementPi = proposerUns.stream().filter(v -> !v.equals(un)).findFirst();
             events.add(new PIRoleAssigned(cmd.getId(), replacementPi.orElse("")));
         }
 
-        if(un.equals(ec)) {
+        if (un.equals(ec)) {
             Optional<String> replacementEc = proposerUns.stream().filter(v -> !v.equals(un)).findFirst();
             events.add(new ECRoleAssigned(cmd.getId(), replacementEc.orElse("")));
         }

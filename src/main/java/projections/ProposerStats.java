@@ -42,15 +42,29 @@ public class ProposerStats {
         team.uns.remove(evt.getUn());
     }
 
-                   @Override
+    @Override
     public String toString() {
-        Map<String, Long> unCounts = proposalTeams.values().stream().map(t -> t.uns).flatMap(List::stream).collect(Collectors.groupingBy(s -> s, Collectors.counting()));
-        Map<String, Integer> piMap = proposalTeams.values().stream().collect(Collectors.toMap(t -> t.pi, v -> 1, (v1, v2) -> v1 + 1));
-        Map<String, Integer> ecMap = proposalTeams.values().stream().collect(Collectors.toMap(t -> t.ec, v -> 1, (v1, v2) -> v1 + 1));
+        Map<String, Long> unCounts = proposalTeams.values().stream()
+                .map(t -> t.uns)
+                .flatMap(List::stream)
+                .collect(Collectors.groupingBy(s -> s, Collectors.counting()));
+
+        Map<String, Integer> piMap = proposalTeams.values().stream()
+                .collect(Collectors.toMap(t -> t.pi, v -> 1, (v1, v2) -> v1 + 1));
+        Map<String, Integer> ecMap = proposalTeams.values().stream()
+                .collect(Collectors.toMap(t -> t.ec, v -> 1, (v1, v2) -> v1 + 1));
+
         StringBuilder sb = new StringBuilder("Proposal team stats (un=occurrences):\n");
-        unCounts.entrySet().stream().max(Comparator.comparing(Map.Entry::getValue)).ifPresent(v -> sb.append("Most common proposer: ").append(v).append("\n"));
-        piMap.entrySet().stream().max(Comparator.comparing(Map.Entry::getValue)).ifPresent(v -> sb.append("Most common pi: ").append(v).append("\n"));
-        ecMap.entrySet().stream().max(Comparator.comparing(Map.Entry::getValue)).ifPresent(v -> sb.append("Most common ec: ").append(v).append("\n"));
+        unCounts.entrySet().stream()
+                .max(Comparator.comparing(Map.Entry::getValue))
+                .ifPresent(v -> sb.append("Most common proposer: ").append(v).append("\n"));
+        piMap.entrySet().stream()
+                .max(Comparator.comparing(Map.Entry::getValue))
+                .ifPresent(v -> sb.append("Most common pi: ").append(v).append("\n"));
+        ecMap.entrySet().stream()
+                .max(Comparator.comparing(Map.Entry::getValue))
+                .ifPresent(v -> sb.append("Most common ec: ").append(v).append("\n"));
+
         return sb.toString();
     }
 
