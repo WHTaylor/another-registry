@@ -21,8 +21,10 @@ public class Serializer {
             ObjectNode payloadJson = (ObjectNode) mapper.readTree(sEvt.getPayload());
             payloadJson.put(AGGREGATE_ID, sEvt.getAggregateId());
             return (Event) mapper.treeToValue(payloadJson, Class.forName(sEvt.getEventType()));
-        } catch (IOException | ClassNotFoundException ex) {
-            throw new RuntimeException(ex);
+        } catch (IOException ex) {
+            throw new RuntimeException("Failed to deserialize event " + sEvt.getId() + ", payload " + sEvt.getPayload(), ex);
+        } catch (ClassNotFoundException ex) {
+            throw new RuntimeException("Event " + sEvt.getId() + " type " + sEvt.getEventType() + " not found", ex);
         }
     }
 }

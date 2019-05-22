@@ -31,7 +31,7 @@ public class AggregateRepo {
                     try {
                         method.invoke(aggInstance, evt);
                     } catch (IllegalAccessException | InvocationTargetException ex) {
-                        ex.printStackTrace();
+                        throw new RuntimeException("Failed to apply event " + evt, ex);
                     }
                 });
             }

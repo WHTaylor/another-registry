@@ -2,6 +2,7 @@ package infrastructure;
 
 import infrastructure.exceptions.CommandHandlerConflictException;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -83,9 +84,9 @@ public class MessageDispatcher {
         Consumer<Event> subscriber = evt -> {
             try {
                 evtHandler.invoke(obj, evt);
-            } catch (Exception ex) {
+            } catch (IllegalAccessException | InvocationTargetException ex) {
                 //TODO: Log, eventually some kind of retry queue?
-                ex.printStackTrace();
+                throw new RuntimeException("Event handler " + obj + " failed to handle event " + evt, ex);
             }
         };
         eventHandlers.computeIfAbsent(evtHandler.getParameterTypes()[0], k -> new ArrayList<>()).add(subscriber);
