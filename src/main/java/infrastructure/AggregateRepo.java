@@ -41,6 +41,7 @@ public class AggregateRepo {
     AggregateRoot getAggregate(UUID id, Class<? extends AggregateRoot> clazz) {
         AggregateRoot agg = null;
         List<Event> events = eventRepo.getEventsFor(id);
+
         if (useCache) {
             try {
                 agg = aggregateCache.getOrDefault(id, clazz.newInstance());

@@ -7,6 +7,11 @@ import java.util.UUID;
 public class ProposerRemoved extends Event {
     private String un;
 
+    /**
+     * Event and all subclasses require a no-arg constructor for deserialization
+     */
+    public ProposerRemoved() { super(); }
+
     public ProposerRemoved(UUID id, String un) {
         super(id);
         this.un = un;

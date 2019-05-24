@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class InMemoryEventStore implements EventStore {
-    private HashMap<String, List<SerializedEvent>> events;
+    private HashMap<UUID, List<SerializedEvent>> events;
 
     public InMemoryEventStore() {
         events = new HashMap<>();

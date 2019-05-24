@@ -11,16 +11,19 @@ public class Serializer {
 
     public static SerializedEvent serialize(Event evt) {
         ObjectNode json = mapper.valueToTree(evt);
-        String id = json.get(AGGREGATE_ID).toString();
         json.remove(AGGREGATE_ID);
-        return new SerializedEvent(id, evt.getClass(), json.toString());
+        return new SerializedEvent(evt.getAggregateId(), evt.getClass(), json.toString());
     }
 
     public static Event deserialize(SerializedEvent sEvt) {
         try {
             ObjectNode payloadJson = (ObjectNode) mapper.readTree(sEvt.getPayload());
-            payloadJson.put(AGGREGATE_ID, sEvt.getAggregateId());
-            return (Event) mapper.treeToValue(payloadJson, Class.forName(sEvt.getEventType()));
+            if (payloadJson == null) {
+                payloadJson = mapper.createObjectNode();
+            }
+            payloadJson.put(AGGREGATE_ID, sEvt.getAggregateId().toString());
+            Class<?> eventType = Class.forName(sEvt.getEventType());
+            return (Event) mapper.readValue(payloadJson.toString(), eventType);
         } catch (IOException ex) {
             throw new RuntimeException("Failed to deserialize event " + sEvt.getId() + ", payload " + sEvt.getPayload(), ex);
         } catch (ClassNotFoundException ex) {
